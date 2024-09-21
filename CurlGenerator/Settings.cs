@@ -14,7 +14,8 @@ public class Settings
     
     // handler related
     public const string CanSend = "canSend";
-    public const string Match = "matchCurl";
+    //public const string Match = "matchCurl";
+    public const string OutputCurl = "outputCurl";
     public const string Expected = "expectedCurl";
 }
 
@@ -30,4 +31,14 @@ public class QuoteTypes
 {
     public static string Double_ = "\"";
     public static string Single_ = "'";
+}
+
+public enum Mode
+{
+    None,
+    FormData,
+    FormUrlEncoded,
+    Raw,
+    Binary,
+    GraphQL
 }

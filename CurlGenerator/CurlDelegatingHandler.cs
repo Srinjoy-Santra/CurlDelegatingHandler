@@ -18,7 +18,6 @@ public class CurlDelegatingHandler()
         CurlRequestMessage curlRequestMessage =  new CurlRequestMessage(request);
         string result = await curlRequestMessage.BuildAsync();
 
-        bool isCurlMatched = expected.FirstOrDefault() == result;
         HttpResponseMessage response;
         if (bool.TryParse(canSend.FirstOrDefault(), out bool send) && send)
         {
@@ -28,7 +27,8 @@ public class CurlDelegatingHandler()
         {
             response = new HttpResponseMessage(HttpStatusCode.Unused);
         }
-        response.Headers.Add(Settings.Match, isCurlMatched.ToString()); 
+        //response.Headers.Add(Settings.Match, isCurlMatched.ToString()); 
+        response.Headers.Add(Settings.OutputCurl, result);
         
         return response;
     }

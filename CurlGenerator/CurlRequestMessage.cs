@@ -40,30 +40,39 @@ public class CurlRequestMessage(HttpRequestMessage httpRequestMessage)
         HttpRequestMessage request = await CloneAsync(_request);
         
         IBuilder builder = new Builder(new Settings());
+        
         builder.AddMethod(request.Method.ToString(), request.Content != null);
-        builder.AddUrl(request?.RequestUri?.ToString());
+        
+        
+        Dictionary<string, string> headers = new();
+        ExtractHeaders(headers, request.Headers);
+        builder.AddUrl(request.RequestUri?.ToString());
         if (request.Content != null)
         {
-            Dictionary<string, string> headers = new();
-            ExtractHeaders(headers, request.Headers);
-            ExtractHeaders(headers, request.Content.Headers);
             
             string reqBody = await request.Content.ReadAsStringAsync();
             string contentType = headers.GetValueOrDefault("Content-Type", "");
-
-            string mode = "";
+            ExtractHeaders(headers, request.Content.Headers);
+            builder.AddHeaders(headers);
+            Mode mode = Mode.None;
             
             if (contentType.Contains("application/json"))
             {
-                mode = "raw";
+                mode = Mode.Raw;
             } else if (contentType.Contains("multipart/form-data"))
             {
-                mode = "formdata";
+                mode = Mode.FormData;
                 headers.Remove("Content-Type");
+            } else if (contentType.Contains("application/x-www-form-urlencoded"))
+            {
+                mode = Mode.FormUrlEncoded;
             }
             
-            builder.AddHeaders(headers);
             builder.AddBody(mode, reqBody);
+        }
+        else
+        {
+            builder.AddHeaders(headers);
         }
 
         void ExtractHeaders(Dictionary<string, string> headers, HttpHeaders requestHeaders)

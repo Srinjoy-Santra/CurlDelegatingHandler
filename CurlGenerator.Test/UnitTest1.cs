@@ -1,11 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace CurlGenerator.Test;
 
 
 using System.Text;
-using Microsoft.Extensions.Http;
-
 
 public class UnitTest1 : IClassFixture<HttpClientGenerator>
 {
@@ -28,9 +24,10 @@ public class UnitTest1 : IClassFixture<HttpClientGenerator>
         string url = "https://jsonplaceholder.typicode.com/posts";
         string jsonPayload = @"{""title"": ""New Post"", ""body"": ""This is the body of the new post"", ""userId"": 1}";
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+        
         var result = await _httpClient.PostAsync(url, content);
-        string? match = result.Headers.GetValues(Settings.Match).FirstOrDefault();
-        Assert.True(bool.TryParse(match, out bool isMatched) && isMatched);
+        string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
+        Assert.Equal(outputCurl, curl);
     }
 
     private const string PostFormDataWithFileCurl =
@@ -41,7 +38,6 @@ public class UnitTest1 : IClassFixture<HttpClientGenerator>
     {
         _httpClient.DefaultRequestHeaders.Add(Settings.Expected, curl);
         
-        var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://postman-echo.com/post");
         request.Headers.Add("Cookie", "sails.sid=s%3A3FymUYozeUuwzv6Znh8kdcuExLGNH2BC.jd0jX3p2HRPfY0PieRxdd6HJSqIeGarBi616trRmoyE");
         var content = new MultipartFormDataContent();
@@ -52,28 +48,7 @@ public class UnitTest1 : IClassFixture<HttpClientGenerator>
         request.Content = content;
         
         var result = await _httpClient.SendAsync(request);
-        string? match = result.Headers.GetValues(Settings.Match).FirstOrDefault();
-        Assert.True(bool.TryParse(match, out bool isMatched) && isMatched);
-    }
-}
-
-public class HttpClientGenerator
-{
-    public HttpClient HttpClient;
-
-    public HttpClientGenerator()
-    {
-        var services = new ServiceCollection();
-        services.AddTransient<CurlDelegatingHandler>();
-        services.AddHttpClient();
-        services.ConfigureAll<HttpClientFactoryOptions>(options => 
-            options.HttpMessageHandlerBuilderActions.Add(builder => 
-                builder.AdditionalHandlers.Add(builder.Services.GetRequiredService<CurlDelegatingHandler>())
-            ));
-        
-        var serviceProvider = services.BuildServiceProvider();
-
-        var factory = serviceProvider.GetService<IHttpClientFactory>();
-        HttpClient = factory.CreateClient();
+        string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
+        Assert.Equal(outputCurl, curl);
     }
 }
