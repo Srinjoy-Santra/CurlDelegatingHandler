@@ -101,6 +101,32 @@ public class Builder : IBuilder
                         .Append(content)
                         .Append(_quoteType);
                     return;
+                case "formdata":
+                    string[] data = content.Split("--");
+                    foreach (string datum in data)
+                    {
+                        string[] lines = datum.Split("\r\n");
+                        if (lines.Length > 5)
+                        {
+                            bool isFileType = !lines[1].Contains("text/plain");
+                            if (!isFileType)
+                            {
+                                string key = lines[2].Split("=")[1];
+                                string value = lines[4];
+
+                                _snippet.Append(_indent).Append(Format("-F"));
+                                _snippet.Append(" ").Append(_quoteType);
+                                _snippet.Append(Sanitize(key)).Append("=");
+                                _snippet.Append(QuoteTypes.Double_).Append(Sanitize(value)).Append(QuoteTypes.Double_);
+                                
+                                // TODO:contentType check and append
+                                _snippet.Append(_quoteType);
+                            }
+                        }
+                    }
+
+                    return;
+                    
             }
             _snippet.Append(content);
         }
@@ -188,8 +214,10 @@ public class Builder : IBuilder
             input = Regex.Replace(input,"(?<!\\\\)\\\\\\\\", "\\\\\\\\\\\\\"");
         }
         else if (_settings.QuoteType == QuoteTypes.Single_)
-        {
-            input = Regex.Replace(input,"/'/", "\\\\''");
+        {       
+            input = input.Replace("\\", @"\\");
+            input = Regex.Replace(input,"'", "'\\''");
+            input = Regex.Replace(input,"\"", "\\\"");
         }
 
         if (_settings.IsTrimmed)

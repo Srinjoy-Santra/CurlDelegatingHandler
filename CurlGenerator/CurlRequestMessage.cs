@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Net.Http.Headers;
+
 namespace CurlGenerator;
 
 public class CurlRequestMessage(HttpRequestMessage httpRequestMessage)
@@ -42,22 +45,39 @@ public class CurlRequestMessage(HttpRequestMessage httpRequestMessage)
         if (request.Content != null)
         {
             Dictionary<string, string> headers = new();
-            foreach(var pair in request.Content.Headers)
+            ExtractHeaders(headers, request.Headers);
+            ExtractHeaders(headers, request.Content.Headers);
+            
+            string reqBody = await request.Content.ReadAsStringAsync();
+            string contentType = headers.GetValueOrDefault("Content-Type", "");
+
+            string mode = "";
+            
+            if (contentType.Contains("application/json"))
             {
-                if(pair.Value == null)
+                mode = "raw";
+            } else if (contentType.Contains("multipart/form-data"))
+            {
+                mode = "formdata";
+                headers.Remove("Content-Type");
+            }
+            
+            builder.AddHeaders(headers);
+            builder.AddBody(mode, reqBody);
+        }
+
+        void ExtractHeaders(Dictionary<string, string> headers, HttpHeaders requestHeaders)
+        {
+            foreach (var pair in requestHeaders)
+            {
+                if (pair.Value == null)
                     continue;
                 var pairValues = pair.Value.ToList();
-                if(pairValues.Count < 1)
+                if (pairValues.Count < 1)
                     continue;
                 string v = pairValues[0];
                 headers[pair.Key] = v;
             }
-            builder.AddHeaders(headers);
-            
-            string reqBody = await request.Content.ReadAsStringAsync();
-            string contentType = headers.GetValueOrDefault("Content-Type", "");
-            string mode = contentType.Contains("application/json") ? "raw": "";
-            builder.AddBody(mode, reqBody);
         }
 
         return builder.GetSnippet();
