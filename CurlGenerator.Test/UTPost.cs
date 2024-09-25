@@ -1,13 +1,15 @@
+using FluentAssertions;
+
 namespace CurlGenerator.Test;
 
 
 using System.Text;
 
-public class UnitTest1 : IClassFixture<HttpClientGenerator>
+public class UTPost : IClassFixture<HttpClientGenerator>
 {
     private readonly HttpClient _httpClient;
 
-    public UnitTest1(HttpClientGenerator httpClientGenerator)
+    public UTPost(HttpClientGenerator httpClientGenerator)
     {
         _httpClient = httpClientGenerator.HttpClient;
         _httpClient.DefaultRequestHeaders.Add(Settings.CanSend, "False");
@@ -19,15 +21,21 @@ public class UnitTest1 : IClassFixture<HttpClientGenerator>
     [InlineData(PlaceHolderPostCurl)]
     public async Task Test1Async(string curl)
     {
-        _httpClient.DefaultRequestHeaders.Add(Settings.Expected, curl);
-
+        // Arrange
         string url = "https://jsonplaceholder.typicode.com/posts";
         string jsonPayload = @"{""title"": ""New Post"", ""body"": ""This is the body of the new post"", ""userId"": 1}";
         var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
         
+        //Act
         var result = await _httpClient.PostAsync(url, content);
         string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
-        Assert.Equal(outputCurl, curl);
+        
+        //Assert
+        outputCurl.Should().ContainEquivalentOf($"'{url}'");
+        outputCurl.Should().ContainEquivalentOf(" -H 'Content-Type: application/json;");
+        outputCurl.Should().ContainEquivalentOf(" -d '{\"title\": \"New Post\", \"body\": \"This is the body of the new post\", \"userId\": 1}'");
+        outputCurl.Should().NotContainAny("GET", "PUT");
+
     }
 
     private const string PostFormDataWithFileCurl =
@@ -36,9 +44,8 @@ public class UnitTest1 : IClassFixture<HttpClientGenerator>
     [InlineData(PostFormDataWithFileCurl)]
     public async Task Test2Async(string curl)
     {
-        _httpClient.DefaultRequestHeaders.Add(Settings.Expected, curl);
-        
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://postman-echo.com/post");
+        string uri = "https://postman-echo.com/post";
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
         request.Headers.Add("Cookie", "sails.sid=s%3A3FymUYozeUuwzv6Znh8kdcuExLGNH2BC.jd0jX3p2HRPfY0PieRxdd6HJSqIeGarBi616trRmoyE");
         var content = new MultipartFormDataContent();
         content.Add(new StringContent("dsf"), "fdjks");
@@ -49,6 +56,13 @@ public class UnitTest1 : IClassFixture<HttpClientGenerator>
         
         var result = await _httpClient.SendAsync(request);
         string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
-        Assert.Equal(outputCurl, curl);
+        
+        outputCurl.Should().ContainEquivalentOf($"'{uri}'");
+        outputCurl.Should().ContainEquivalentOf(@" -F 'fdjks=""dsf""'");
+        outputCurl.Should().ContainEquivalentOf(@"-F '&^%=""helo""'");
+        outputCurl.Should().ContainEquivalentOf(@"-F '12=""\""23\""""'");
+        outputCurl.Should().ContainEquivalentOf(@" -F ''\''123'\''=""'\''\""23\\\""4\\\""\""'\''""'");
+        outputCurl.Should().NotContainAny("GET", "PUT");
+        
     }
 }

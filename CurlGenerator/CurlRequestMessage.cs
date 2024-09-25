@@ -43,17 +43,15 @@ public class CurlRequestMessage(HttpRequestMessage httpRequestMessage)
         
         builder.AddMethod(request.Method.ToString(), request.Content != null);
         
-        
         Dictionary<string, string> headers = new();
         ExtractHeaders(headers, request.Headers);
         builder.AddUrl(request.RequestUri?.ToString());
         if (request.Content != null)
         {
-            
             string reqBody = await request.Content.ReadAsStringAsync();
-            string contentType = headers.GetValueOrDefault("Content-Type", "");
             ExtractHeaders(headers, request.Content.Headers);
             builder.AddHeaders(headers);
+            string contentType = headers.GetValueOrDefault("Content-Type", "");
             Mode mode = Mode.None;
             
             if (contentType.Contains("application/json"))
