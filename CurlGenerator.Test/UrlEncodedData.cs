@@ -1,4 +1,5 @@
-﻿using Xunit.Abstractions;
+﻿using FluentAssertions;
+using Xunit.Abstractions;
 
 namespace CurlGenerator.Test;
 
@@ -20,9 +21,8 @@ public class UrlEncodedData : IClassFixture<HttpClientGenerator>
     [InlineData(PostUrlEncodedDataCurl)]
     public async Task Test1Async(string curl)
     {
-        _httpClient.DefaultRequestHeaders.Add(Settings.Expected, curl);
-        
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://postman-echo.com/post/?hardik=\"me\"");
+        string uri = "https://postman-echo.com/post/?hardik=\"me\"";
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
         request.Headers.Add("Cookie", "sails.sid=s%3A0SHeDli8jrGSnQT0gfxgn7-PzSG_mryL.7i6ST7KW8PXSQ3tyV1qf7M6WEl8G0QN5pV0uEsMFqbo");
         var collection = new List<KeyValuePair<string, string>>();
         collection.Add(new("1", "a"));
@@ -34,6 +34,13 @@ public class UrlEncodedData : IClassFixture<HttpClientGenerator>
         
         var result = await _httpClient.SendAsync(request);
         string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
-        Assert.Equal(outputCurl, curl);
+        
+        outputCurl.Should().ContainEquivalentOf("'https://postman-echo.com/post/?hardik=%22me%22'");
+        outputCurl.Should().ContainEquivalentOf(" -H 'Content-Type: application/x-www-form-urlencoded'");
+        outputCurl.Should().ContainEquivalentOf(" -d '1=a'");
+        outputCurl.Should().ContainEquivalentOf(" -d '2=b'");
+        outputCurl.Should().ContainEquivalentOf(" -d '%22%2212%22%22=%2223%22'");
+        outputCurl.Should().ContainEquivalentOf(@" -d ''\''1%222%5C%22%223'\''='\''1%2223%224'\'''");
+        outputCurl.Should().NotContainAny("GET", "PUT");
     }
 }

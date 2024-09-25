@@ -42,7 +42,7 @@ public class UTPost : IClassFixture<HttpClientGenerator>
         @"curl -X POST 'https://postman-echo.com/post' -H 'Cookie: sails.sid=s%3A3FymUYozeUuwzv6Znh8kdcuExLGNH2BC.jd0jX3p2HRPfY0PieRxdd6HJSqIeGarBi616trRmoyE' -F 'fdjks=""dsf""' -F '&^%=""helo""' -F '12=""\""23\""""' -F ''\''123'\''=""'\''\""23\\\""4\\\""\""'\''""'";
     [Theory]
     [InlineData(PostFormDataWithFileCurl)]
-    public async Task Test2Async(string curl)
+    public async Task PostFormDataWithFileAsync(string curl)
     {
         string uri = "https://postman-echo.com/post";
         var request = new HttpRequestMessage(HttpMethod.Post, uri);

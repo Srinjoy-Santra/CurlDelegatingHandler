@@ -11,12 +11,8 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9114af03_002D646b_002D44ad_002D8a0e_002D076624020512/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPost.Test2Async&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UrlEncodedData.Test1Async&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ef4a5363_002D7d70_002D44d8_002D81e4_002Df87c41046922/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1Async #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UnitTest1.Test1Async&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	</wpf:ResourceDictionary>
