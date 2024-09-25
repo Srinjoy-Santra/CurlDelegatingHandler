@@ -54,7 +54,7 @@ public class CurlRequestMessage(HttpRequestMessage httpRequestMessage)
             string contentType = headers.GetValueOrDefault("Content-Type", "");
             Mode mode = Mode.None;
             
-            if (contentType.Contains("application/json"))
+            if (contentType.Contains("application/json") || contentType.Contains("text/plain"))
             {
                 mode = Mode.Raw;
             } else if (contentType.Contains("multipart/form-data"))

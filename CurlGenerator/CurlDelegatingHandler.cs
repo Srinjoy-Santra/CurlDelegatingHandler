@@ -25,7 +25,7 @@ public class CurlDelegatingHandler()
         {
             response = new HttpResponseMessage(HttpStatusCode.Unused);
         }
-        response.Headers.Add(Settings.OutputCurl, result);
+        response.Headers.Add(Settings.OutputCurl, result.Replace("\n","\\n"));
         
         return response;
     }

@@ -4,12 +4,12 @@
     &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPost.Test2Async&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5692c0ec_002Df5e8_002D4f87_002D8543_002D2daef122261f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="TestPutRequestAsync" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5692c0ec_002Df5e8_002D4f87_002D8543_002D2daef122261f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestPutRequestAsync" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPut.TestPutRequestAsync&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9114af03_002D646b_002D44ad_002D8a0e_002D076624020512/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9114af03_002D646b_002D44ad_002D8a0e_002D076624020512/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UrlEncodedData.Test1Async&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
