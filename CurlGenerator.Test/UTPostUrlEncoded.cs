@@ -3,12 +3,12 @@ using Xunit.Abstractions;
 
 namespace CurlGenerator.Test;
 
-public class UrlEncodedData : IClassFixture<HttpClientGenerator>
+public class UTPostUrlEncoded : IClassFixture<HttpClientGenerator>
 {
     private readonly ITestOutputHelper _testOutputHelper;
     private readonly HttpClient _httpClient;
 
-    public UrlEncodedData(HttpClientGenerator httpClientGenerator, ITestOutputHelper testOutputHelper)
+    public UTPostUrlEncoded(HttpClientGenerator httpClientGenerator, ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
         _httpClient = httpClientGenerator.HttpClient;
