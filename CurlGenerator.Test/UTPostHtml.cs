@@ -1,38 +1,37 @@
 ﻿using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace CurlGenerator.Test;
 
-public class UTPostJson : IClassFixture<HttpClientGenerator>
+public class UTPostHtml : IClassFixture<HttpClientGenerator>
 {
     private readonly HttpClient _httpClient;
 
-    public UTPostJson(HttpClientGenerator httpClientGenerator)
+    public UTPostHtml(HttpClientGenerator httpClientGenerator)
     {
         _httpClient = httpClientGenerator.HttpClient;
         _httpClient.DefaultRequestHeaders.Add(Settings.CanSend, "False");
     }
 
-    private const string PostJsonCurl =
-        @"curl 'https://postman-echo.com/post' -H 'Content-Type: application/json' -H 'Cookie: sails.sid=s%3AX7QRCwYjWljdBe9RHzb2GT8xchj6YtQd.l70DDhTERU%2Fm9%2Bfigzqoo4zdWrZMQYLMnnMuX5VyKMI' -d '{
-  ""json"": ""Test-Test""
-}'";
+    private const string PostXmlCurl =
+        @"curl 'https://postman-echo.com/post' -H 'Content-Type: text/html' -d '<html>
+  Test Test
+</html>'";
     [Theory]
-    [InlineData(PostJsonCurl)]
-    public async Task PostJsonAsync(string curl)
+    [InlineData(PostXmlCurl)]
+    public async Task PostXmlAsync(string curl)
     {
         string uri = "https://postman-echo.com/post";
         var request = new HttpRequestMessage(HttpMethod.Post, uri);
         request.Headers.Add("Cookie", "sails.sid=s%3AX7QRCwYjWljdBe9RHzb2GT8xchj6YtQd.l70DDhTERU%2Fm9%2Bfigzqoo4zdWrZMQYLMnnMuX5VyKMI");
-        var content = new StringContent("{\n  \"json\": \"Test-Test\"\n}", null, "application/json");
+        var content = new StringContent("<html>\n  Test Test\n</html>", null, "text/html");
         request.Content = content;
         
         var result = await _httpClient.SendAsync(request);
         string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
         
         outputCurl.Should().ContainEquivalentOf($"'{uri}'");
-        outputCurl.Should().ContainEquivalentOf(" -H 'Content-Type: application/json");
-        outputCurl.Should().ContainEquivalentOf(@"-d '{\n  ""json"": ""Test-Test""\n}'");
+        outputCurl.Should().ContainEquivalentOf(" -H 'Content-Type: text/html");
+        outputCurl.Should().ContainEquivalentOf(@"-d '<html>\n  Test Test\n</html>'");
         outputCurl.Should().NotContainAny("GET", "PUT");
     }
 }

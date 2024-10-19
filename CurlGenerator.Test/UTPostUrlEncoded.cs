@@ -43,4 +43,26 @@ public class UTPostUrlEncoded : IClassFixture<HttpClientGenerator>
         outputCurl.Should().ContainEquivalentOf(@" -d ''\''1%222%5C%22%223'\''='\''1%2223%224'\'''");
         outputCurl.Should().NotContainAny("GET", "PUT");
     }
+
+    private const string PostResolveUrlCurl =
+        @"curl 'https://postman-echo.com/post' -H 'Content-Type: application/x-www-form-urlencoded' -d 'Duis posuere augue vel cursus pharetra. In luctus a ex nec pretium. Praesent neque quam, tincidunt nec leo eget, rutrum vehicula magna.
+Maecenas consequat elementum elit, id semper sem tristique et. Integer pulvinar enim quis consectetur interdum volutpat.'";
+    [Theory]
+    [InlineData(PostResolveUrlCurl)]
+    public async Task PostResolveUrlAsync(string curl)
+    {
+        string uri = "https://postman-echo.com/post";
+        var request = new HttpRequestMessage(HttpMethod.Post, uri);
+        var content = new StringContent(@"Duis posuere augue vel cursus pharetra. In luctus a ex nec pretium. Praesent neque quam, tincidunt nec leo eget, rutrum vehicula magna.
+Maecenas consequat elementum elit, id semper sem tristique et. Integer pulvinar enim quis consectetur interdum volutpat.", null, "application/x-www-form-urlencoded");
+        request.Content = content;
+        
+        var result = await _httpClient.SendAsync(request);
+        string outputCurl = result.Headers.GetValues(Settings.OutputCurl).FirstOrDefault();
+        
+        outputCurl.Should().ContainEquivalentOf($"'{uri}'");
+        outputCurl.Should().ContainEquivalentOf(" -H 'Content-Type: application/x-www-form-urlencoded");
+        outputCurl.Should().ContainEquivalentOf(@"-d 'Duis posuere augue vel cursus pharetra. In luctus a ex nec pretium. Praesent neque quam, tincidunt nec leo eget, rutrum vehicula magna.\nMaecenas consequat elementum elit, id semper sem tristique et. Integer pulvinar enim quis consectetur interdum volutpat.'");
+        outputCurl.Should().NotContainAny("GET", "PUT");
+    }
 }
