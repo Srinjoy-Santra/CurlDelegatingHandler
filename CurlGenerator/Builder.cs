@@ -1,4 +1,6 @@
+using System.Collections.Specialized;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -7,7 +9,7 @@ namespace CurlGenerator;
 public interface IBuilder
 {
     void AddHeaders(Dictionary<string,string> headers);
-    void AddBody(string mode, string content);
+    void AddBody(Mode mode, string content);
     void AddMethod(string method, bool isBodyEmpty);
     void AddUrl(string url);
 
@@ -85,13 +87,13 @@ public class Builder : IBuilder
     }
     
 
-    public void AddBody(string mode, string content)
+    public void AddBody(Mode mode, string content)
     {
         if (!string.IsNullOrEmpty(content))
         {
             switch (mode)
             {
-                case "raw":
+                case Mode.Raw:
                     bool isAsperandFound = content.Contains('@');
                     string optionName = isAsperandFound ? "--data-raw" : Format("-d");
                     _snippet.Append(_indent)
@@ -101,7 +103,7 @@ public class Builder : IBuilder
                         .Append(content)
                         .Append(_quoteType);
                     return;
-                case "formdata":
+                case Mode.FormData:
                     string[] data = content.Split("--");
                     foreach (string datum in data)
                     {
@@ -126,12 +128,38 @@ public class Builder : IBuilder
                     }
 
                     return;
-                    
+                case Mode.FormUrlEncoded:
+                    NameValueCollection queryString = HttpUtility.ParseQueryString(content);
+                    foreach (string? key in queryString)
+                    {
+                        if (key is null) continue;
+                        string value = queryString[key] ?? string.Empty;
+                        
+                        _snippet.Append(_indent).Append(Format("-d"));
+                        _snippet.Append(" ").Append(_quoteType);
+                        _snippet.Append(UrlEncode(key)).Append("=");
+                        _snippet.Append(UrlEncode(value));
+                        _snippet.Append(_quoteType);
+                    }
+                    return;
             }
             _snippet.Append(content);
         }
     }
 
+    private string UrlEncode(string value)
+    {
+        if (value.Contains("'"))
+        {
+            string singleQuoteRemovedValue = value.Substring(1,value.Length-2);
+
+            string encodedValue = Sanitize(singleQuoteRemovedValue, isUrlEncoded: true);
+            return $@"'\''{encodedValue}'\''";
+        }
+
+        return Sanitize(value, isUrlEncoded:true);
+    }
+    
     public void AddMethod(string method, bool isBodyEmpty)
     {
         if(method == "HEAD")
@@ -145,6 +173,32 @@ public class Builder : IBuilder
 
     public void AddUrl(string url)
     {
+        var queries = HttpUtility.ParseQueryString(url);
+        if (queries.Count > 0)
+        {
+            string[] urlParts = url.Split("?");
+            if (urlParts.Length == 2)
+            {
+                StringBuilder urlBuilder = new();
+                int queryCount = 0;
+                foreach (string? key in queries)
+                {
+                    if (key is null) continue;
+                    string value = queries[key] ?? string.Empty;
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        value = Uri.EscapeDataString(value);
+                    }
+
+                    urlBuilder.Append(key).Append("=").Append(value);
+                    queryCount ++;
+                    if(queryCount != queries.Count)
+                        urlBuilder.Append("&");
+                }
+
+                url = urlBuilder.ToString();
+            }
+        }
         _snippet.Append($" {_settings.QuoteType}{url}{_settings.QuoteType}");
     }
 
@@ -155,11 +209,14 @@ public class Builder : IBuilder
 
     private bool ShouldAddHttpMethod(string method, bool isBodyEmpty)
     {
+        bool isBodyPruningDisabled = true;
+        
         switch (method)
         {
-            case "HEAD": return false;
+            case "HEAD": 
+                return false;
             case "GET":
-                return !isBodyEmpty;
+                return !isBodyEmpty && isBodyPruningDisabled;
             case "POST":
                 return isBodyEmpty;
             default:
@@ -204,7 +261,7 @@ public class Builder : IBuilder
         if (string.IsNullOrEmpty(input)) return "";
 
         if (isUrlEncoded)
-            input = HttpUtility.UrlEncode(input);
+            input = Uri.EscapeDataString(input);
 
         if (isBackSlashed)
             input = Regex.Replace(input,"/\\/", "\\\\");

@@ -1,6 +1,18 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=88106efa_002Dd8a9_002D41c0_002D9423_002D8c19bce55461/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test2Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=380bdc48_002Db0e6_002D49cb_002Db6c9_002D95e4b7fbba3c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test2Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UnitTest1.Test2Async&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPost.Test2Async&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5692c0ec_002Df5e8_002D4f87_002D8543_002D2daef122261f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TestPutRequestAsync" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPut.TestPutRequestAsync&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9114af03_002D646b_002D44ad_002D8a0e_002D076624020512/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UrlEncodedData.Test1Async&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	</wpf:ResourceDictionary>
