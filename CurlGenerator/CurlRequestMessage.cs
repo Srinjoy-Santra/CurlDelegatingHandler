@@ -53,8 +53,9 @@ public class CurlRequestMessage(HttpRequestMessage httpRequestMessage)
             builder.AddHeaders(headers);
             string contentType = headers.GetValueOrDefault("Content-Type", "");
             Mode mode = Mode.None;
-            
-            if (contentType.Contains("application/json") || contentType.Contains("text/plain"))
+
+            string[] rawTypes = { "application/json", "application/javascript", "text/plain", "text/html", "text/xml",};
+            if (rawTypes.Any(type => contentType.Contains(type)))
             {
                 mode = Mode.Raw;
             } else if (contentType.Contains("multipart/form-data"))

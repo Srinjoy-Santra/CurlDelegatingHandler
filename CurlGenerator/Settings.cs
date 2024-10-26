@@ -14,9 +14,7 @@ public class Settings
     
     // handler related
     public const string CanSend = "canSend";
-    //public const string Match = "matchCurl";
     public const string OutputCurl = "outputCurl";
-    public const string Expected = "expectedCurl";
 }
 
 public class LineContinuationCharacters
