@@ -132,15 +132,29 @@ public class Builder : IBuilder
                     NameValueCollection queryString = HttpUtility.ParseQueryString(content);
                     foreach (string? key in queryString)
                     {
-                        if (key is null) continue;
-                        string value = queryString[key] ?? string.Empty;
+                        if (key is null)
+                        {
+                            if(queryString.Count > 1)
+                                continue;
+                            _snippet.Append(_indent).Append(Format("-d"));
+                            _snippet.Append(" ").Append(_quoteType);
+                            _snippet.Append(content);
+                            _snippet.Append(_quoteType);
+
+                        }
+                        else
+                        {
+                             
+                            string value = queryString[key] ?? string.Empty;
                         
-                        _snippet.Append(_indent).Append(Format("-d"));
-                        _snippet.Append(" ").Append(_quoteType);
-                        _snippet.Append(UrlEncode(key)).Append("=");
-                        _snippet.Append(UrlEncode(value));
-                        _snippet.Append(_quoteType);
+                            _snippet.Append(_indent).Append(Format("-d"));
+                            _snippet.Append(" ").Append(_quoteType);
+                            _snippet.Append(UrlEncode(key)).Append("=");
+                            _snippet.Append(UrlEncode(value));
+                            _snippet.Append(_quoteType);
+                        }
                     }
+
                     return;
             }
             _snippet.Append(content);
