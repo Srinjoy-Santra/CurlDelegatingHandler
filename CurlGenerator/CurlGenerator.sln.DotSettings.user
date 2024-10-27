@@ -1,27 +1,4 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4d83c6a2_002D5647_002D4264_002Db6a2_002D4f41e57a7bc1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1Async" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Not&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPostXml&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/Not&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=7d463e4c_002D7706_002D457b_002D92a7_002Dfb851c483789/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;And&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPostXml.PostXmlAsync&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPostHtml&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPostUrlEncoded.PostResolveUrlAsync&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::507C1815-B9A3-4753-872D-8B08ACF40345::net8.0::CurlGenerator.Test.UTPostUrlEncoded&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-  &lt;/And&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
-	
-	
-	
-	
-	</wpf:ResourceDictionary>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6fefd425_002D4df0_002D491a_002D8417_002Daaa5fae3fb2e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
