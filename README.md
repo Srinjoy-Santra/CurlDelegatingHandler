@@ -1,5 +1,5 @@
 # CurlDelegatingHandler
-`
+
 This package generates curl by extending HttpClient of .NET with DelegatingHandler i.e. Custom Message Handler. 
 
 - [Nuget release](https://www.nuget.org/packages/HttpClient.CurlDelegatingHandler)
